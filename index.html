@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nitrosamine Enforcement Costs</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            cursor: pointer;
+        }
+        th:hover {
+            background-color: #e2e2e2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .sort-indicator {
+            float: right;
+            margin-left: 5px;
+        }
+        #filterInput {
+            width: 300px;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .table-controls {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Estimated Cost Breakdown of Nitrosamine Enforcement in Pharma</h1>
+
+<div class="table-controls">
+    <input type="text" id="filterInput" placeholder="Filter table...">
+</div>
+
+<table id="costTable">
+    <thead>
+        <tr>
+            <th data-column="0">Category <span class="sort-indicator"></span></th>
+            <th data-column="1">Cost Drivers <span class="sort-indicator"></span></th>
+            <th data-column="2">Estimated Cost Range (USD) <span class="sort-indicator"></span></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Risk assessment & testing</td>
+            <td>Initial Risk Assessment</td>
+            <td>$2,000 – $3,000</td>
+        </tr>
+        <tr>
+            <td>Risk assessment & testing</td>
+            <td>Screening Analysis (LC-MS/MS)</td>
+            <td>$3,000 – $4,000</td>
+        </tr>
+        <tr>
+            <td>Risk assessment & testing</td>
+            <td>Confirmatory Testing (Per Compound)</td>
+            <td>$5,000 – $8,000</td>
+        </tr>
+        <tr>
+            <td>Risk assessment & testing</td>
+            <td>NDSRI Impurity Synthesis + Analysis</td>
+            <td>$15,000 – $20,000+</td>
+        </tr>
+        <tr>
+            <td>Risk assessment & testing</td>
+            <td>Full Method Development + Validation</td>
+            <td>$10,000 – $15,000</td>
+        </tr>
+        <tr>
+            <td>Risk assessment & testing</td>
+            <td>Upgraded Analytical Equipment (Capital Investment)</td>
+            <td>Thousands to millions (per lab/site)</td>
+        </tr>
+        <tr>
+            <td>Manufacturing and process changes</td>
+            <td>Supply Chain Reassessment & Qualification</td>
+            <td>Significant variability, difficult to estimate precisely</td>
+        </tr>
+        <tr>
+            <td>Manufacturing and process changes</td>
+            <td>Process Redesign & Optimization</td>
+            <td>Significant variability, depends on the scale and complexity of the process</td>
+        </tr>
+        <tr>
+            <td>Manufacturing and process changes</td>
+            <td>Raw Material/Excipient Sourcing Changes</td>
+            <td>May involve higher costs for alternative or higher-quality materials</td>
+        </tr>
+        <tr>
+            <td>Manufacturing and process changes</td>
+            <td>Reformulation and Re-development</td>
+            <td>Significant variability, depending on the need for bioequivalence studies and new regulatory filings</td>
+        </tr>
+        <tr>
+            <td>Drug recalls and product loss</td>
+            <td>Product Recalls (Logistics, Disposal)</td>
+            <td>Highly variable, depends on product volume and distribution complexity</td>
+        </tr>
+        <tr>
+            <td>Drug recalls and product loss</td>
+            <td>Revenue Loss from Recalls/Stockouts</td>
+            <td>Highly variable, depends on the affected product's market share and duration of shortage</td>
+        </tr>
+        <tr>
+            <td>Regulatory affairs & documentation</td>
+            <td>Regulatory Data Package Preparation</td>
+            <td>$3,000 – $4,000</td>
+        </tr>
+        <tr>
+            <td>Ongoing compliance</td>
+            <td>Routine testing costs</td>
+            <td>Ongoing, depends on the number of products and frequency of testing</td>
+        </tr>
+        <tr>
+            <td>Legal & reputational</td>
+            <td>Litigation and Settlement Costs</td>
+            <td>Potentially billions (e.g., Zantac litigation)</td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const table = document.getElementById('costTable');
+        const headers = table.querySelectorAll('th');
+        const filterInput = document.getElementById('filterInput');
+        let sortDirection = {};
+
+        // Sorting functionality
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const column = header.dataset.column;
+                const body = table.querySelector('tbody');
+                const rows = Array.from(body.querySelectorAll('tr'));
+                const isAscending = sortDirection[column] !== 'ascending';
+
+                // Sort the rows
+                rows.sort((a, b) => {
+                    const aText = a.children[column].textContent.trim();
+                    const bText = b.children[column].textContent.trim();
+
+                    // Simple string comparison
+                    return isAscending ? aText.localeCompare(bText) : bText.localeCompare(aText);
+                });
+
+                // Clear previous sort indicators
+                headers.forEach(h => {
+                    const indicator = h.querySelector('.sort-indicator');
+                    if (indicator) indicator.textContent = '';
+                });
+
+                // Update the DOM
+                rows.forEach(row => body.appendChild(row));
+
+                // Set new sort direction
+                sortDirection[column] = isAscending ? 'ascending' : 'descending';
+
+                // Add indicator to current header
+                const indicator = header.querySelector('.sort-indicator');
+                if (indicator) {
+                    indicator.textContent = isAscending ? '▲' : '▼';
+                }
+            });
+        });
+
+        // Filtering functionality
+        filterInput.addEventListener('input', (e) => {
+            const filterText = e.target.value.toLowerCase();
+            const rows = table.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const rowText = row.textContent.toLowerCase();
+                if (rowText.includes(filterText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
